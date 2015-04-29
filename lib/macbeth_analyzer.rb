@@ -1,10 +1,12 @@
+
 class MacbethAnalyzer
-  require 'net/http'
   require 'nokogiri'
+  require 'net/http'
 
   MACBETH_URL = 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml'
 
-  attr_accessor :doc, :char_line_count
+  attr_reader   :doc
+  attr_accessor :char_line_count
 
   def initialize
     @doc = Nokogiri::XML(get_macbeth)
@@ -34,7 +36,7 @@ class MacbethAnalyzer
   end
 end
 
-# analyzer = MacbethAnalyzer.new
-# analyzer.count_lines
-# analyzer.print_lines
+analyzer = MacbethAnalyzer.new
+analyzer.count_lines
+analyzer.print_lines
 
