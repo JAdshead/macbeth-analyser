@@ -1,14 +1,16 @@
-require_relative 'http_document'
+require 'nokogiri'
 
 module MacbethAnalyzer
   class Analyzer
-    MACBETH_URL = 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml'
-
     attr_reader :result
 
-    def initialize
-      @doc = (HTTPDocument.new(MACBETH_URL).as_xml)
+    def initialize(doc)
+      @doc = to_xml(doc)
       @result = Hash.new(0)
+    end
+
+    def to_xml(doc)
+      Nokogiri::XML(doc)
     end
 
     def analyze
@@ -19,13 +21,8 @@ module MacbethAnalyzer
         count = speech.css("LINE").size
         @result[char] += count
       end
-      self
+      @result
     end
 
-    def print_result
-      @result.each do |key, value|
-        print "#{key.to_s} #{value.to_s} \n"
-      end
-    end
   end
 end

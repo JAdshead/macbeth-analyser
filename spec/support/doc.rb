@@ -1,8 +1,8 @@
 require 'erb'
 
-module XmlGenerator
+module DocGenerator
 
-  def generate_xml(speech:)
+  def generate_doc(speech:)
     ERB.new(template).result(binding)
   end
 

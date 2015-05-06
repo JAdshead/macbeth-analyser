@@ -1,5 +1,5 @@
 require 'webmock/rspec'
-require_relative './support/xml'
+require_relative './support/doc'
 
 RSpec.configure do |config|
   config.include WebMock

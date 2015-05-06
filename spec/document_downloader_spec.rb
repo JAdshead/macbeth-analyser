@@ -1,8 +1,8 @@
 require 'spec_helper'
-require_relative '../lib/http_document'
+require_relative '../lib/document_downloader'
 
-describe MacbethAnalyzer::HTTPDocument do
-  subject(:doc){ MacbethAnalyzer::HTTPDocument.new(url) }
+describe MacbethAnalyzer::DocumentDownloader do
+  subject(:doc){ MacbethAnalyzer::DocumentDownloader.new(url) }
   let(:url) { "http://www.example.com/" }
   let(:body) { "<xml></xml>" }
 
@@ -15,12 +15,6 @@ describe MacbethAnalyzer::HTTPDocument do
   describe "#request_document" do
     it "returns body of requested page" do
       expect(subject.request_document).to eq(body)
-    end
-  end
-
-  describe "#as_xml" do
-    it "returns xml document" do
-      expect(subject.as_xml).to be_an(Nokogiri::XML::Document)
     end
   end
 end

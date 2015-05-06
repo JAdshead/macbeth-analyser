@@ -2,12 +2,11 @@ require 'spec_helper'
 require_relative '../lib/analyzer'
 require 'nokogiri'
 
-include XmlGenerator
+include DocGenerator
 
 describe MacbethAnalyzer::Analyzer do
-  subject(:analyzer) { MacbethAnalyzer::Analyzer.new }
-  let(:macbeth) { XmlGenerator.generate_xml(speech: {"bob" => ["hello", "world", "Jon"], "witch" => ["Here are words."]})}
-  let(:macbeth_xml) { Nokogiri::XML(macbeth) }
+  subject(:analyzer) { MacbethAnalyzer::Analyzer.new(macbeth) }
+  let(:macbeth) { DocGenerator.generate_doc(speech: {"bob" => ["hello", "world", "Jon"], "witch" => ["Here are words."]})}
   let(:url) { 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml' }
 
   before(:each) do
@@ -16,7 +15,6 @@ describe MacbethAnalyzer::Analyzer do
 
   describe "#analyze" do
     it "counts each characters lines" do
-      allow_any_instance_of(MacbethAnalyzer::HTTPDocument).to receive(:as_xml).and_return(macbeth_xml)
       count = { 'bob' => 3, 'witch' => 1}
       subject.analyze
       expect(subject.result).to eq(count)
@@ -26,6 +24,10 @@ describe MacbethAnalyzer::Analyzer do
       subject.analyze
       expect(subject.result.include?('all')).to be_falsey
     end
+  end
+
+  describe "#to_xml" do
+    it { expect(subject.to_xml(macbeth)).to be_an(Nokogiri::XML::Document) }
   end
 end
 
