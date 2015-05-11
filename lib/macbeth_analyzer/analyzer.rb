@@ -2,19 +2,16 @@ require 'nokogiri'
 
 module MacbethAnalyzer
   class Analyzer
-    attr_reader :result
+    attr_writer :result
+    attr_reader :doc
 
     def initialize(doc)
-      @doc = to_xml(doc)
-      @result = Hash.new(0)
-    end
-
-    def to_xml(doc)
-      Nokogiri::XML(doc)
+      @doc = doc
+      reset_result
     end
 
     def analyze
-      @result = Hash.new(0)
+      reset_result
       @doc.css('SPEECH').each do |speech|
         next if speech.css("SPEAKER").text == 'ALL'
         char = speech.css("SPEAKER").text
@@ -22,6 +19,14 @@ module MacbethAnalyzer
         @result[char] += count
       end
       @result
+    end
+
+    def result
+      @result.empty? ? @result = analyze : @result
+    end
+
+    def reset_result
+      self.result = Hash.new(0)
     end
 
   end

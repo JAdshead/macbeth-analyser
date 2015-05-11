@@ -1,14 +1,19 @@
 require_relative 'analyzer'
-require_relative 'document_downloader'
+require_relative 'document'
 
 module MacbethAnalyzer
   class Application
     MACBETH_URL = 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml'
 
+    attr_reader :doc, :analysis
+
+    def initialize
+      @doc = Document.new(MACBETH_URL)
+      @analysis = Analyzer.new(@doc.as_xml).result
+    end
+
     def run
-      doc = DocumentDownloader.new(MACBETH_URL).doc
-      analysis = Analyzer.new(doc).analyze
-      print_hash(analysis)
+      print_hash(@analysis)
     end
 
     def print_hash(hash)
@@ -20,7 +25,7 @@ module MacbethAnalyzer
     end
 
     def titleize(string)
-      string.split(/(\W)/).map(&:capitalize).join
+      string.split(/(\W)+/).map(&:capitalize).join
     end
   end
 end

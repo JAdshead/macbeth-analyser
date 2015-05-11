@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/application'
+require_relative '../lib/macbeth_analyzer.rb'
 
 app = MacbethAnalyzer::Application.new
 app.run

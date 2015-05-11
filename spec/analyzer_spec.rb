@@ -1,12 +1,13 @@
 require 'spec_helper'
-require_relative '../lib/analyzer'
+require_relative '../lib/macbeth_analyzer/analyzer'
 require 'nokogiri'
 
 include DocGenerator
 
 describe MacbethAnalyzer::Analyzer do
-  subject(:analyzer) { MacbethAnalyzer::Analyzer.new(macbeth) }
+  subject(:analyzer) { MacbethAnalyzer::Analyzer.new(xml_macbeth) }
   let(:macbeth) { DocGenerator.generate_doc(speech: {"bob" => ["hello", "world", "Jon"], "witch" => ["Here are words."]})}
+  let(:xml_macbeth) { Nokogiri::XML(macbeth) }
   let(:url) { 'http://www.ibiblio.org/xml/examples/shakespeare/macbeth.xml' }
 
   before(:each) do
@@ -26,8 +27,5 @@ describe MacbethAnalyzer::Analyzer do
     end
   end
 
-  describe "#to_xml" do
-    it { expect(subject.to_xml(macbeth)).to be_an(Nokogiri::XML::Document) }
-  end
 end
 
